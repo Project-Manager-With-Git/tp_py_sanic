@@ -17,9 +17,13 @@ sanic是python环境下最成熟的异步语法微框架之一,不过异步语�
 
 + dev分支:维护最新的的组件,组件tag全部从这里分出,统一使用cp-0.0.0作为前缀
 + master分支用于测试各种模版配置,模版tag全部从这里分出,统一使用api-0.0.0这样的形式,前缀分为:
-    + api,单纯的RESTfulapi服务模版
+    + static,单纯的静态资源服务模板
+    + rest,单纯的RESTfulapi服务模版
     + ws,单纯的websocket服务模版
+    + api,包含restful接口,sse接口,和websocket接口的服务模版
     + spa,混合api,ws,sse和download的单页应用模版.
+    + mvc,由jinja2模版动态渲染的应用模版
+    + mvcapi,由jinja2模版动态渲染的应用模版同时包含restful接口,sse接口,和websocket接口的服务模版
 
 ## 用法说明
 
