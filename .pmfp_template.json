@@ -11,10 +11,7 @@
         "sanic-testing >= 22.9.0",
         "jsonschema >= 3.2.0",
         "pyloggerhelper >= 0.0.2",
-        "schema-entry >= 0.1.5",
-        "sanic-jinja2 >= 2022.11.11",
-        "sanic-session >= 0.8.0",
-        "sserender >= 0.0.3"
+        "schema-entry >= 0.1.5"
     ],
     "test_requires": [
         "coverage >= 5.5",
@@ -66,16 +63,6 @@
             "description": "sanic的RESTful接口组件",
             "default_path": "{{ project_name }}/rest"
         },
-        "sse": {
-            "source": "tp_py_sanic@dev//sse",
-            "description": "sanic的sse接口组件",
-            "default_path": "{{ project_name }}/sse"
-        },
-        "view": {
-            "source": "tp_py_sanic@dev//view",
-            "description": "sanic的动态页面组件",
-            "default_path": "{{ project_name }}/view"
-        },
         "ws": {
             "source": "tp_py_sanic@dev//ws",
             "description": "sanic的websocket接口组件",
@@ -87,7 +74,7 @@
             "default_path": "{{ project_name }}/__main__.py"
         },
         "dockerfile": {
-            "source": "dockerfile.jinja",
+            "source": "tp_py_sanic@dev//dockerfile",
             "description": "构造项目镜像使用的dockerfile",
             "default_path": "dockerfile"
         },
@@ -95,26 +82,6 @@
             "source": "cp_dockercompose@v0.0.2//server_standalone",
             "description": "通用的服务使用的dockercompose,适用于调试",
             "default_path": "docker-compose.yml"
-        },
-        "servmvpapi": {
-            "source": "tp_py_sanic@dev//servmvpapi",
-            "description": "由jinja2模版动态渲染的应用模版同时包含RESTful接口,sse接口,和websocket接口的服务模版",
-            "default_path": "{{ project_name }}/serv.py"
-        },
-        "servrest": {
-            "source": "tp_py_sanic@dev//servrest",
-            "description": "RESTfulapi服务模版",
-            "default_path": "{{ project_name }}/serv.py"
-        },
-        "servspa": {
-            "source": "tp_py_sanic@dev//servspa",
-            "description": "混合RESTful,ws,sse和download的单页应用模版",
-            "default_path": "{{ project_name }}/serv.py"
-        },
-        "servstatic": {
-            "source": "tp_py_sanic@dev//servstatic",
-            "description": "静态资源服务模板",
-            "default_path": "{{ project_name }}/serv.py"
         },
         "servws": {
             "source": "tp_py_sanic@dev//servws",
