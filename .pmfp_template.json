@@ -61,7 +61,7 @@
         "decorator_source": {
             "source": "decorator/_ref_source_fer__decorator.py.jinja",
             "description": "handler使用的装饰器文件模版",
-            "default_path": "{{ project_name }}/decorator/{{ source }}.py"
+            "default_path": "{{ project_name }}/decorator/{{ source }}_decorator.py"
         },
         "download": {
             "source": "download",
