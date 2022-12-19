@@ -24,7 +24,7 @@
     ],
     "template_keys": {
         "app_name": {
-            "description": "",
+            "description": "应用名",
             "default": "{{ project_name }}"
         },
         "author": {
@@ -32,7 +32,7 @@
             "default": "{{ author }}"
         },
         "author_email": {
-            "description": "作者",
+            "description": "作者email",
             "default": "{{ author_email }}"
         },
         "version": {
@@ -43,7 +43,7 @@
             "description": "项目说明",
             "default": "{{ description }}"
         },
-        "url":{
+        "url": {
             "description": "项目地址",
             "default": "{{ url }}"
         },
@@ -145,7 +145,7 @@
         },
         "dockerfile": {
             "source": "dockerfile.jinja",
-            "description": "",
+            "description": "构造项目镜像使用的dockerfile",
             "default_path": "dockerfile"
         },
         "servapi": {
@@ -156,7 +156,7 @@
         "servmvc": {
             "source": "servs/servmvc.py.jinja",
             "description": "由jinja2模版动态渲染的应用模版",
-            "default_path":"{{ project_name }}/serv.py"
+            "default_path": "{{ project_name }}/serv.py"
         },
         "servmvpapi": {
             "source": "servs/servmvpapi.py.jinja",
