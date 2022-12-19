@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster
+FROM {{ cross_compiling }}python:3.11-slim-buster
 RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN apt update -y && apt install -y --no-install-recommends build-essential curl && rm -rf /var/lib/apt/lists/*
 COPY pip.conf /etc/pip.conf

@@ -23,6 +23,10 @@
         "aiounittest >= 1.4.0"
     ],
     "template_keys": {
+        "cross_compiling": {
+            "description": "交叉编译",
+            "default": "--platform=$TARGETPLATFORM "
+        },
         "app_name": {
             "description": "应用名",
             "default": "{{ project_name }}"
