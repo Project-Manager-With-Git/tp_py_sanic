@@ -59,7 +59,7 @@
             "default_path": "{{ project_name }}/__main__.py"
         },
         "dockerfile": {
-            "source": "dockerfile",
+            "source": "tp_py_sanic@dev//dockerfile",
             "description": "构造项目镜像使用的dockerfile",
             "default_path": "dockerfile"
         },
