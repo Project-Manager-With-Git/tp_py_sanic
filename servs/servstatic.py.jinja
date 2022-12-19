@@ -10,6 +10,18 @@ from sanic.worker.loader import AppLoader
 project_dir = Path(__file__).parents[1]
 
 
+def handler_index_factory(static_dir: str) -> Callable[..., Coroutine[Any, Any, Optional[HTTPResponse]]]:
+    static_dir_p = Path(static_dir)
+    p = static_dir_p.joinpath("index.html")
+
+    async def handler_index_stream(request: Request) -> ResponseStream:
+        return await file_stream(
+            str(p),
+            chunk_size=1024,
+        )
+    return handler_index_stream
+
+
 class Serv(EntryPoint):
     _name = "{{ app_name }}"
     default_config_file_paths = [
@@ -96,7 +108,7 @@ class Serv(EntryPoint):
             "static_source_dir": {
                 "type": "string",
                 "description": "静态资源存放的文件夹",
-                "default": "static"
+                "default": "dist"
             },
             "serv_cert_path": {
                 "type": "string",
@@ -186,6 +198,7 @@ class Serv(EntryPoint):
                 app.config.CORS_EXPOSE_HEADERS = self.config["cors_expose_headers"]
         # 注册静态文件所在文件夹
         app.static("/", str(project_dir.joinpath(self.config["static_source_dir"])))
+        app.add_route(handler_index_factory(self.config["static_source_dir"]), "/", name="index", strict_slashes=True)
         # 先设置后扩展
         Extend(app)
         return app

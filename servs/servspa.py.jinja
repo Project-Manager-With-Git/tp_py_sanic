@@ -196,8 +196,8 @@ class Serv(EntryPoint):
         init_sse(app)
         init_download(app)
         # 处理单页应用中的页面
-        app.static("/", str(project_dir.joinpath(self.config.get("static_{{ source }}_dir", "dist"))))
-        app.add_route(handler_index_factory(self.config.get("static_{{ source }}_dir", "dist")), "/", name="index", strict_slashes=True)
+        app.static("/", str(project_dir.joinpath(self.config.get("static_source_dir", "dist"))))
+        app.add_route(handler_index_factory(self.config.get("static_source_dir", "dist")), "/", name="index", strict_slashes=True)
         # app.add_route(handler_index, "/", strict_slashes=True)
         return app
 

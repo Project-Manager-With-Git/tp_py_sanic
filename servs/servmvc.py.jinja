@@ -180,9 +180,9 @@ class Serv(EntryPoint):
         Extend(app)
         # 处理模式中的接口注册
         session = Session(app, interface=InMemorySessionInterface())  # 注意正式环境换成其他session
-        init_view(app, session=session, pkg_path=str(project_dir.joinpath(self.config.get("template_{{ source }}_dir", "templates"))))
+        init_view(app, session=session, pkg_path=str(project_dir.joinpath(self.config.get("template_source_dir", "templates"))))
         # 处理mvc应用中的静态资源
-        app.static("/static", str(project_dir.joinpath(self.config.get("static_{{ source }}_dir", "static"))))
+        app.static("/static", str(project_dir.joinpath(self.config.get("static_source_dir", "static"))))
         return app
 
     def do_main(self) -> None:
