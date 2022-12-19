@@ -6,7 +6,6 @@ from sanic import Sanic
 from sanic.worker.loader import AppLoader
 from sanic.log import logger, error_logger, access_logger
 from sanic_ext import Extend
-from sanic_testing import TestManager
 from sanic_session import Session, InMemorySessionInterface
 from view import init as init_view
 
@@ -135,8 +134,6 @@ class Serv(EntryPoint):
         app.config.FALLBACK_ERROR_FORMAT = "json"
         # 注册测试
         if log_level == "DEBUG":
-            # debug模式下启动testmanager
-            TestManager(app)
             # debug状态下启动swargger
             address = self.config.get("address", "0.0.0.0:5000")
             _, port = address.split(":")
