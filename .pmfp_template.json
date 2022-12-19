@@ -162,8 +162,8 @@
             "description": "由jinja2模版动态渲染的应用模版",
             "default_path": "{{ project_name }}/serv.py"
         },
-        "servmvpapi": {
-            "source": "servs/servmvpapi.py.jinja",
+        "servmvcapi": {
+            "source": "servs/servmvcapi.py.jinja",
             "description": "由jinja2模版动态渲染的应用模版同时包含RESTful接口,sse接口,和websocket接口的服务模版",
             "default_path": "{{ project_name }}/serv.py"
         },
