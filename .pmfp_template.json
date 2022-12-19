@@ -91,8 +91,8 @@
             "description": "通用的服务使用的dockercompose,适用于调试",
             "default_path": "docker-compose.yml"
         },
-        "servmcpapi": {
-            "source": "tp_py_sanic@dev//servmvpapi",
+        "servmccapi": {
+            "source": "tp_py_sanic@dev//servmvcapi",
             "description": "由jinja2模版动态渲染的应用模版同时包含RESTful接口,sse接口,和websocket接口的服务模版",
             "default_path": "{{ project_name }}/serv.py"
         }
