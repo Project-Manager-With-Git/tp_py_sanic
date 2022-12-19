@@ -1,0 +1,9 @@
+from sanic.request import Request
+from sanic.response import BaseHTTPResponse, text
+
+from typing import Optional
+
+
+async def req_{{ source }}(request: Request) -> Optional[BaseHTTPResponse]:
+    request.ctx.foo = "bar"
+    return text("I halted the request")

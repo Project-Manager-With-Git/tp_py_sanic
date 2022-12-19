@@ -1,0 +1,28 @@
+from sanic import Sanic, Blueprint
+from sanic.request import Request
+from sanic.response import HTTPResponse, text
+from .{{ source }}_source import {{ source }}
+
+
+def init(app: Sanic) -> Sanic:
+    app.add_route(ping, '/ping', methods=["GET"])
+    api = Blueprint.group({{ source }}, url_prefix="/api")
+    app.blueprint(api)
+    return app
+
+
+async def ping(request: Request) -> HTTPResponse:
+    """This is a simple ping handler
+
+    Now we will add some more details
+
+    openapi:
+    ---
+    operationId: ping
+    tags:
+      - ping
+    responses:
+      '200':
+        description: Just some dots
+    """
+    return text("pong")

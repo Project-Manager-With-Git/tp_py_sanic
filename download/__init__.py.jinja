@@ -1,0 +1,9 @@
+from sanic import Sanic, Blueprint
+from .{{ source }}_file import {{ source }}
+
+
+def init(app: Sanic) -> Sanic:
+    download = Blueprint("download", url_prefix="/download")
+    download.add_route({{ source }}, "/{{ source }}", methods=["GET"])
+    app.blueprint(download)
+    return app

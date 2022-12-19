@@ -1,0 +1,13 @@
+from sanic.request import Request
+from typing import Any, Dict
+from .jinja import jinja
+
+
+@jinja.template("index.html")
+async def {{ source }}(request: Request) -> Dict[str, Any]:
+    jinja.flash(request, "success message", "success")
+    jinja.flash(request, "info message", "info")
+    jinja.flash(request, "warning message", "warning")
+    jinja.flash(request, "error message", "error")
+    jinja.session(request)["user"] = "session user"
+    return dict(greetings="Hello, template decorator12!")

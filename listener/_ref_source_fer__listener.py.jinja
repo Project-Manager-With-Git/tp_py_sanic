@@ -1,0 +1,6 @@
+from sanic import Sanic
+from asyncio import AbstractEventLoopPolicy
+
+
+async def {{ source }}(app: Sanic, loop: AbstractEventLoopPolicy) -> None:
+    print("listener")

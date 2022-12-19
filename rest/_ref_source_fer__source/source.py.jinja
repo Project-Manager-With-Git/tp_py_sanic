@@ -1,0 +1,122 @@
+from sanic.views import HTTPMethodView
+from sanic.request import Request
+from sanic.response import json, HTTPResponse
+from sanic_ext import openapi
+from pyloggerhelper import log
+
+
+class UserProfile:
+    name: str
+    age: int
+    email: str
+
+
+class Source(HTTPMethodView):
+    async def get(self, request: Request, {{ source }}_id: int) -> HTTPResponse:
+        """
+        本示例使用Sanic的HTTPMethodView
+
+        openapi:
+        ---
+        operationId: {{ source }}get
+        tags:
+            - {{ source }}
+        parameters:
+            - in: path
+              name: {{ source }}_id
+              type: string
+              required: true
+        responses:
+            200:
+                description: 单个资源项
+                schema:
+                    id: {{ source }}
+                    properties:
+                        {{ source }}name:
+                            type: string
+                            description: 资源名
+                            default: 匿名资源
+        """
+        log.debug("get {{ source }}_id", {{ source }}_id={{ source }}_id)
+        return json({"test": True}, ensure_ascii=False)
+
+    @openapi.body({"application/json": UserProfile}, description="JSON parameters")
+    async def put(self, request: Request, {{ source }}_id: int) -> HTTPResponse:
+        """
+        本示例使用Sanic的HTTPMethodView
+
+        openapi:
+        ---
+        operationId: {{ source }}put
+        tags:
+          - {{ source }}
+        parameters:
+          - in: body
+            name: body
+            description: JSON parameters.
+            schema:
+              properties:
+                first_name:
+                  type: string
+                  description: First name.
+                  example: Alice
+                last_name:
+                  type: string
+                  description: Last name.
+                  example: Smith
+                dob:
+                  type: string
+                  format: date
+                  description: Date of birth.
+                comment:
+                  type: string
+                  description: Something arbitrary.
+                  example: Hello world
+          - in: path
+            name: {{ source }}_id
+            type: string
+            required: true
+        responses:
+          200:
+            description: 单个资源项
+            schema:
+              id: {{ source }}
+              properties:
+                {{ source }}:
+                  type: string
+                  description: 资源名
+                  default: 匿名资源
+        """
+        log.debug("get {{ source }}_id", {{ source }}_id={{ source }}_id)
+        jsoninput = request.json
+        log.debug("put get json input", input=jsoninput)
+        return json({"result": "ok"}, ensure_ascii=False)
+
+    async def delete(self, request: Request, {{ source }}_id: int) -> HTTPResponse:
+        """
+        本示例使用Sanic的HTTPMethodView
+
+        openapi:
+        ---
+        operationId: {{ source }}delete
+        tags:
+            - {{ source }}
+        parameters:
+            - in: path
+              name: {{ source }}_id
+              type: string
+              required: true
+        responses:
+            200:
+                description: 单个资源项
+                schema:
+                    id: {{ source }}
+                    properties:
+                        {{ source }}name:
+                            type: string
+                            description: 资源名
+                            default: 匿名资源
+        """
+        log.debug("get {{ source }}_id", {{ source }}_id={{ source }}_id)
+        log.debug("delete get json input")
+        return json({"result": "ok"}, ensure_ascii=False)

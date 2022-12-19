@@ -1,10 +1,8 @@
-# tp_py_sanic-dev
+# cp-0.0.1
 
-sanic项目的组件开发分支.python的最低版本要求为3.8
+提供了基本的组件
 
-## 组件模板
-
-组件模板可以在没有对应组件时使用`ppm project add --located-path=<located> --kv=source::<默认资源名>`命令添加.只要在服务入口中调用`init(app)`即可注册使用
+## 新增组件模板
 
 | 组件名       | 说明                                                 |
 | ------------ | ---------------------------------------------------- |
@@ -17,10 +15,7 @@ sanic项目的组件开发分支.python的最低版本要求为3.8
 | `view`       | sanic的动态页面组件                                  |
 | `download`   | 下载组件                                             |
 
-
-## 组件资源模版
-
-组件资源模版是对应组件模版的资源文件/文件夹,当已经添加了组件后要向其中添加额外的资源可以使用`ppm project add --located-path=<located> --kv=source::<资源名>`命令添加.然后再对应的组件模块中的`__init__.py`中导入并在`init(app)`函数中注册即可
+## 新增组件资源模版
 
 | 组件资源名             | 说明                                  |
 | ---------------------- | ------------------------------------- |
@@ -33,3 +28,17 @@ sanic项目的组件开发分支.python的最低版本要求为3.8
 | `ws_source`            | sanic的websocket接口中资源接口模版    |
 | `view_source`          | sanic的动态页面文件模版               |
 | `download_source`      | 下载资源文件模版,多用于实时生成的文件 |
+
+## 新增基础组件
+
+| 组件名       | 说明                                                                                |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `main`       | sanic项目的入口模块组件                                                             |
+| `dockerfile` | sanic项目的dockerfile组件文件                                                       |
+| `servapi`    | 包含RESTful接口,sse接口,和websocket接口的服务模版                                   |
+| `servmvc`    | 由jinja2模版动态渲染的应用模版                                                      |
+| `servmvpapi` | 由jinja2模版动态渲染的应用模版同时包含RESTful接口,sse接口,和websocket接口的服务模版 |
+| `servrest`   | RESTfulapi服务模版                                                                  |
+| `servspa`    | 混合RESTful,ws,sse和download的单页应用模版                                          |
+| `servstatic` | 静态资源服务模板                                                                    |
+| `servws`     | websocket服务模版                                                                   |

@@ -1,0 +1,9 @@
+from sanic import Sanic, Blueprint
+from .{{ source }}_source import {{ source }}
+
+
+def init(app: Sanic) -> Sanic:
+    sse = Blueprint("sse", url_prefix="/sse")
+    sse.add_route({{ source }}, "/{{ source }}", methods=["GET"])
+    app.blueprint(sse)
+    return app

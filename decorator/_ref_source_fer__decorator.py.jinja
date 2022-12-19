@@ -1,0 +1,15 @@
+import functools
+from typing import Callable, Any, Dict, Coroutine
+from sanic.response import json, HTTPResponse
+from sanic.request import Request
+
+
+def {{ source }}(schema: Dict[str, Any]) -> Callable[[Callable[..., Coroutine[Any, Any, HTTPResponse]]], Callable[..., Coroutine[Any, Any, HTTPResponse]]]:
+    def decorate(func: Callable[..., Coroutine[Any, Any, HTTPResponse]]) -> Callable[..., Coroutine[Any, Any, HTTPResponse]]:
+        @functools.wraps(func)
+        async def wrap(request: Request, *args: Any, **kwargs: Any) -> HTTPResponse:
+            print("run decorate")
+            response = await func(request, *args, **kwargs)
+            return response
+        return wrap
+    return decorate

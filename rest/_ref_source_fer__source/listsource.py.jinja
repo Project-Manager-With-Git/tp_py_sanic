@@ -1,0 +1,60 @@
+from sanic.response import json, HTTPResponse
+from sanic.request import Request
+from sanic.views import HTTPMethodView
+from pyloggerhelper import log
+
+
+class ListSource(HTTPMethodView):
+    async def get(self, request: Request) -> HTTPResponse:
+        """
+        本示例使用Sanic的HTTPMethodView
+
+        openapi:
+        ---
+        operationId: {{ source }}listget
+        tags:
+            - {{ source }}
+        responses:
+            200:
+                description: 资源列表
+        """
+        return json([1, 2, 3, 4], ensure_ascii=False)
+
+    async def post(self, request: Request) -> HTTPResponse:
+        """
+        本示例使用Sanic的HTTPMethodView
+
+        openapi:
+        ---
+        operationId: {{ source }}listpost
+        tags:
+            - {{ source }}
+        parameters:
+            - in: body
+              name: body
+              description: JSON parameters.
+              schema:
+                properties:
+                    first_name:
+                        type: string
+                        description: First name.
+                        example: Alice
+                    last_name:
+                        type: string
+                        description: Last name.
+                        example: Smith
+                    dob:
+                        type: string
+                        format: date
+                        description: Date of birth.
+                    comment:
+                        type: string
+                        description: Something arbitrary.
+                        example: Hello world
+        responses:
+            200:
+                description: 资源创建成功
+        """
+        jsoninput = request.json
+        log.debug("post get json input", input=jsoninput)
+        return json({"result": "ok"}, ensure_ascii=False)

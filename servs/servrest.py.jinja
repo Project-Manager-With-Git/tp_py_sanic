@@ -1,0 +1,215 @@
+import ssl
+from pathlib import Path
+from pyloggerhelper import log
+from schema_entry import EntryPoint
+from sanic import Sanic
+from sanic_ext import Extend
+from sanic.log import logger, error_logger, access_logger
+from sanic.worker.loader import AppLoader
+from sanic_testing import TestManager
+from rest import init as init_rest
+
+project_dir = Path(__file__).parents[1]
+
+
+class Serv(EntryPoint):
+    _name = "{{ app_name }}"
+    default_config_file_paths = [
+        "config.json",
+        "config.yml",
+    ]
+    schema = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "required": [
+            "app_version",
+            "app_name",
+            "log_level",
+            "address",
+        ],
+        "properties": {
+            "app_version": {
+                "type": "string",
+                "title": "v",
+                "description": "应用版本",
+                "default": "{{ version }}"
+            },
+            "app_name": {
+                "type": "string",
+                "title": "n",
+                "description": "应用名",
+                "default": "{{ app_name }}"
+            },
+            "log_level": {
+                "type": "string",
+                "title": "l",
+                "description": "log等级,如果为DEBUG则会认为服务启动在debug模式,且cors不设防",
+                "enum": ["DEBUG", "INFO", "WARN", "ERROR"],
+                "default": "DEBUG"
+            },
+            "address": {
+                "type": "string",
+                "title": "a",
+                "description": "启动地址",
+                "default": "0.0.0.0:5000"
+            },
+            "workers": {
+                "type": "integer",
+                "title": "w",
+                "description": "启动进程数",
+                "default": 1
+            },
+            "published_address": {
+                "type": "string",
+                "title": "p",
+                "description": "外部访问地址,如果指定则会激活cors"
+            },
+            "cros_allow_origins": {
+                "type": "array",
+                "description": "跨域允许的域名",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "cros_allow_credentials": {
+                "type": "boolean",
+                "description": "跨域是否需要证书"
+            },
+            "cors_allow_headers": {
+                "type": "array",
+                "description": "跨域允许的头",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "cors_expose_headers": {
+                "type": "array",
+                "description": "跨域暴露的头",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "serv_cert_path": {
+                "type": "string",
+                "description": "服务端证书位置相对项目目录的位置"
+            },
+            "serv_key_path": {
+                "type": "string",
+                "description": "服务端证书的私钥位置相对项目目录的位置"
+            },
+            "ca_cert_path": {
+                "type": "string",
+                "description": "根证书位置相对项目目录的位置"
+            },
+            "client_crl_path": {
+                "type": "string",
+                "description": "客户端证书黑名单相对项目目录的位置"
+            }
+        }
+    }
+
+    def create_app(self) -> Sanic:
+        app_name = self.config.get("app_name")
+        log_level = self.config.get("log_level")
+        app = Sanic(app_name)
+        logger.setLevel(log_level)
+        error_logger.setLevel(log_level)
+        access_logger.setLevel(log_level)
+        log.initialize_for_app(
+            app_name=app_name,
+            log_level=log_level
+        )
+        log.info("获取配置", config=self.config)
+        # 设置错误返回为json格式
+        app.config.FALLBACK_ERROR_FORMAT = "json"
+        # 注册测试
+        if log_level == "DEBUG":
+            # debug模式下启动testmanager
+            TestManager(app)
+            # debug状态下启动swargger
+            address = self.config.get("address", "0.0.0.0:5000")
+            _, port = address.split(":")
+            app.config.OAS_UI_REDOC = False
+            app.config.OAS_UI_DEFAULT = "swagger"
+            app.config.API_HOST = f"localhost:{port}"
+            app.config.API_BASEPATH = "/"
+            app.config.API_SCHEMES = ["http"]
+            if self.config.get("serv_cert_path") and self.config.get.get("serv_key_path"):
+                app.config.API_SCHEMES.append("https")
+            app.config.API_VERSION = self.config.get("app_version")
+            app.config.API_TITLE = self.config.get("app_name")
+            app.config.API_DESCRIPTION = "{{ description }}"
+            app.config.API_CONTACT_NAME = "{{ author }}"
+            app.config.API_CONTACT_EMAIL = "{{ author_email }}"
+            app.config.API_CONTACT_URL = "{{ url }}"
+            # app.config.API_SECURITY_DEFINITIONS = {"BasicAuth": {"type": "basic"}}
+            # app.config.API_SECURITY_DEFINITIONS = {"ApiKeyAuth": {"type": "apiKey", "in": "header", "name": "Authorization"}}
+        else:
+            # 非debug模式下关闭swagger
+            app.config.OAS = False
+            # 非debug模式下设置cors
+            schema = "http"
+            if self.config.get("serv_cert_path") != "" and self.config.get("serv_key_path"):
+                schema = "https"
+            address = self.config["address"]
+            origins = [f"{schema}://{address}"]
+            if self.config.get("published_address"):
+                published_address = self.config.get("published_address")
+                origins += [f"{schema}://{a}" for a in published_address]
+            if self.config.get("cros_allow_origins"):
+                origins += self.config["cros_allow_origins"]
+            app.config.CORS_ORIGINS = origins
+            if self.config.get("cros_allow_credentials"):
+                app.config.CORS_SUPPORTS_CREDENTIALS = True
+            if self.config.get("cors_allow_headers"):
+                app.config.CORS_ALLOW_HEADERS = self.config["cors_allow_headers"]
+            if self.config.get("cors_expose_headers"):
+                app.config.CORS_EXPOSE_HEADERS = self.config["cors_expose_headers"]
+        # 先设置,后扩展
+        Extend(app)
+        # 处理模式中的接口注册
+        init_rest(app)
+        return app
+
+    def do_main(self) -> None:
+        loader = AppLoader(factory=self.create_app)
+        app = loader.load()
+
+        address = self.config.get("address", "0.0.0.0:5000")
+        host, port = address.split(":")
+        log_level = self.config.get("log_level")
+
+        conf = {
+            "host": host,
+            "port": int(port),
+        }
+        if log_level == "DEBUG":
+            # debug下设置开启debug模式和access_log
+            conf.update(debug=True, access_log=True, dev=True)
+        else:
+            # 非debug下设置worker
+            workers = self.config.get("workers")
+            if workers > 0:
+                conf.update(workers=workers)
+            else:
+                conf.update(fast=True)
+            # 非debug下设置ssl
+            conf.update(debug=True, access_log=True, dev=False)
+            # ssl相关配置
+            if self.config.get("serv_cert_path") and self.config.get.get("serv_key_path"):
+                context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+                context.load_cert_chain(str(project_dir.joinpath(self.config["serv_cert_path"])), keyfile=str(project_dir.joinpath(self.config["serv_key_path"])))
+                if self.config.get("ca_cert_path"):
+                    context.load_verify_locations(str(project_dir.joinpath(self.config["ca_cert_path"])))
+                    context.verify_mode = ssl.CERT_REQUIRED
+                    if self.config.get('client_crl_path'):
+                        context.load_verify_locations(str(project_dir.joinpath(self.config['client_crl_path'])))
+                        context.verify_flags = ssl.VERIFY_CRL_CHECK_LEAF
+                    log.info("use TLS with client auth")
+                else:
+                    log.info("use TLS")
+                conf.update(ssl=context)
+
+        log.info("server start", config=conf)
+        app.prepare(**conf)
+        Sanic.serve(primary=app, app_loader=loader)

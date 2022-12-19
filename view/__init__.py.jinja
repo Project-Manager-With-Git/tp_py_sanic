@@ -1,0 +1,14 @@
+from sanic import Sanic
+from sanic_jinja2 import SanicJinja2
+from typing import Optional, Any
+from .jinja import jinja
+from .{{ source }}_view import {{ source }}
+
+
+def init(app: Sanic, *, session: Optional[Any] = None, **kwargs: Any) -> Sanic:
+    jinja.init_app(app=app, **kwargs)
+    if session is not None:
+        jinja.init_session(session)
+
+    app.add_route({{ source }}, "/{{ source }}", methods=["GET"])
+    return app

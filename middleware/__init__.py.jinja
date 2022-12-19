@@ -1,0 +1,20 @@
+from typing import TypeVar
+from sanic import Sanic, Blueprint
+from sanic.blueprint_group import BlueprintGroup
+from .{{ source }}_reqmw import req_{{ source }}
+from .{{ source }}_resmw import res_{{ source }}
+T = TypeVar('T', Sanic, Blueprint, BlueprintGroup)
+
+
+def init(instance: T) -> T:
+    """注册中间件.
+
+    Args:
+        instance (T): 可以是Sanic对象也可以是Blueprint或者BlueprintGroup
+
+    Returns:
+        T: 注册的对象
+    """
+    instance.register_middleware(req_{{ source }}, "request")
+    instance.register_middleware(res_{{ source }}, "response")
+    return instance

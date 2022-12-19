@@ -1,0 +1,7 @@
+from sanic import Blueprint
+from .list{{ source }} import ListSource
+from .{{ source }} import Source
+
+{{ source }} = Blueprint("{{ source }}", url_prefix="/{{ source }}")
+{{ source }}.add_route(ListSource.as_view(), "/")
+{{ source }}.add_route(Source.as_view(), "/<{{ source }}_id:int>")

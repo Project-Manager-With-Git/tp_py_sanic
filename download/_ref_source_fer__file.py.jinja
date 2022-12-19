@@ -1,0 +1,35 @@
+from sanic.request import Request
+from sanic.response import HTTPResponse
+
+
+async def {{ source }}(request: Request) -> HTTPResponse:
+    """This is a simple sse handler
+
+    Now we will add some more details
+
+    openapi:
+    ---
+    operationId: ping
+    tags:
+      - sse
+    produces: ["text/event-stream"]
+    responses:
+      200:
+        description: example of defining download
+        conetnt:
+          text/csv:
+            schema:
+              type: string
+              format: binary
+    """
+    response = await request.respond(
+        content_type="text/csv",
+        headers={"Content-Disposition": "attachment;filename={{ source }}.csv"}
+    )
+
+    await response.send("foo,bar\r\n")
+    await response.send("a,1\r\n")
+    await response.send("b,2\r\n")
+    await response.send("c,3\r\n")
+    await response.eof()
+    return response

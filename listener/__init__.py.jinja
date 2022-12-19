@@ -1,0 +1,28 @@
+from sanic import Sanic, Blueprint
+from asyncio import AbstractEventLoopPolicy
+from .{{ source }}_listener import {{ source }}
+from typing import TypeVar
+T = TypeVar('T', Sanic, Blueprint)
+
+
+def init_listeners(instance: T) -> T:
+    """注册监听器.
+
+    钩子包括:
+    + main_process_start
+    + main_process_stop
+    + reload_process_start
+    + reload_process_stop
+    + before_server_start
+    + after_server_start
+    + before_server_stop
+    + after_server_stop
+
+    Args:
+        instance (T): 注册对象,可以是Sanic或Blueprint
+
+    Returns:
+        T: 注册对象
+    """
+    instance.register_listener({{ source }}_listener, "before_server_start")
+    return instance

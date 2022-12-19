@@ -1,0 +1,57 @@
+import asyncio
+from sserender import SSE
+from sanic.request import Request
+from sanic.response import HTTPResponse
+
+
+async def {{ source }}(request: Request) -> HTTPResponse:
+    """This is a simple sse handler
+
+    Now we will add some more details
+
+    openapi:
+    ---
+    operationId: ping
+    tags:
+      - sse
+    produces: ["text/event-stream"]
+    responses:
+      default:
+        description: example of defining events for sse
+        schema:
+          type: object
+          x-events:
+            added:
+              type: object
+              properties:
+                message:
+                  type: string
+                createdAt:
+                  type: string
+                  format: date-time
+            updated:
+              type: object
+              properties:
+                previous:
+                  type: string
+                newValue:
+                  type: string
+                updatedAt:
+                  type: string
+                  format: date-time
+    """
+    response = await request.respond(
+        content_type="text/event-stream",
+        headers={
+            "Connection": "keep-alive",
+            "Transfer-Encoding": "chunked",
+            "Cache-Control": "no-cache"
+        }
+    )
+
+    while True:
+        sse = SSE(data="pong")
+        await response.send(sse.render())
+        await asyncio.sleep(1)
+    await response.eof()
+    return response
