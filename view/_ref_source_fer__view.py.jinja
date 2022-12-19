@@ -5,6 +5,19 @@ from .jinja import jinja
 
 @jinja.template("index.html")
 async def {{ source }}(request: Request) -> Dict[str, Any]:
+    """This is a simple view handler
+
+    Now we will add some more details
+
+    openapi:
+    ---
+    operationId: ping
+    tags:
+      - view
+    responses:
+      '200':
+        description: {{ source }} view html
+    """
     jinja.flash(request, "success message", "success")
     jinja.flash(request, "info message", "info")
     jinja.flash(request, "warning message", "warning")
