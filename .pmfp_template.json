@@ -53,14 +53,13 @@
         }
     },
     "components": {
-        
         "main": {
             "source": "tp_py_sanic@dev//main",
             "description": "sanic项目的入口模块组件",
             "default_path": "{{ project_name }}/__main__.py"
         },
         "dockerfile": {
-            "source": "dockerfile.jinja",
+            "source": "dockerfile",
             "description": "构造项目镜像使用的dockerfile",
             "default_path": "dockerfile"
         },
