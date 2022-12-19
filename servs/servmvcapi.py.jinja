@@ -11,7 +11,6 @@ from sanic_session import Session, InMemorySessionInterface
 from rest import init as init_rest
 from ws import init as init_ws
 from sse import init as init_sse
-from download import init as init_download
 from view import init as init_view
 
 project_dir = Path(__file__).parents[1]
@@ -188,7 +187,6 @@ class Serv(EntryPoint):
         init_rest(app)
         init_ws(app)
         init_sse(app)
-        init_download(app)
         # 处理mvc应用中的静态资源
         app.static("/static", str(project_dir.joinpath(self.config.get("static_source_dir", "static"))))
         return app
