@@ -12,7 +12,6 @@ from sanic_testing import TestManager
 from rest import init as init_rest
 from ws import init as init_ws
 from sse import init as init_sse
-from download import init as init_download
 from typing import Callable, Coroutine, Any, Optional
 
 project_dir = Path(__file__).parents[1]
@@ -194,7 +193,6 @@ class Serv(EntryPoint):
         init_rest(app)
         init_ws(app)
         init_sse(app)
-        init_download(app)
         # 处理单页应用中的页面
         app.static("/", str(project_dir.joinpath(self.config.get("static_source_dir", "dist"))))
         app.add_route(handler_index_factory(self.config.get("static_source_dir", "dist")), "/", name="index", strict_slashes=True)
