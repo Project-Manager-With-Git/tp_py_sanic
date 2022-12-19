@@ -17,13 +17,13 @@ sanic是python环境下最成熟的异步语法微框架之一,不过异步语�
 
 + dev分支:维护最新的的组件,组件tag全部从这里分出,统一使用cp-0.0.0作为前缀
 + master分支用于测试各种模版配置,模版tag全部从这里分出,统一使用api-0.0.0这样的形式,前缀分为:
-    + `static`,单纯的静态资源服务模板
-    + `rest`,单纯的RESTfulapi服务模版
-    + `ws`,单纯的websocket服务模版
-    + `api`,包含restful接口,sse接口,和websocket接口的服务模版
+    + `static`,静态资源服务模板
+    + `rest`,RESTfulapi服务模版
+    + `ws`,websocket服务模版
+    + `api`,包含RESTful接口,sse接口,和websocket接口的服务模版
     + `spa`,混合api,ws,sse和download的单页应用模版.
     + `mvc`,由jinja2模版动态渲染的应用模版
-    + `mvcapi`,由jinja2模版动态渲染的应用模版同时包含restful接口,sse接口,和websocket接口的服务模版
+    + `mvcapi`,由jinja2模版动态渲染的应用模版同时包含RESTful接口,sse接口,和websocket接口的服务模版
 
 ## 用法说明
 
@@ -36,10 +36,24 @@ sanic是python环境下最成熟的异步语法微框架之一,不过异步语�
     + `ppm project add cp_py_files@v0.0.2//aiowscli --located-path=aiowscli.py` 异步websocket客户端
     + `ppm project add cp_py_files@v0.0.2//wscli --located-path=wscli.py` 同步websocket客户端
 
++ 添加功能组件
+    + `ppm project add tp_py_sanic@cp-0.0.1//rest --located-path=testsanic --kv=source::user`项目增加RESTful接口
+    + `ppm project add tp_py_sanic@cp-0.0.1//ws --located-path=testsanic --kv=source::user`项目增加websocket接口
+    + `ppm project add tp_py_sanic@cp-0.0.1//sse --located-path=testsanic --kv=source::user`项目增加sse接口
+    + `ppm project add tp_py_sanic@cp-0.0.1//view --located-path=testsanic --kv=source::user`项目增加动态页面
+    + `ppm project add tp_py_sanic@cp-0.0.1//download --located-path=testsanic --kv=source::user`项目增加动态文件下载
+    + `ppm project add tp_py_sanic@cp-0.0.1//decorator --located-path=testsanic --kv=source::user`项目增加装饰器组件
+    + `ppm project add tp_py_sanic@cp-0.0.1//listener --located-path=testsanic --kv=source::user`项目增加sanic监听器组件
+    + `ppm project add tp_py_sanic@cp-0.0.1//middleware --located-path=testsanic --kv=source::user`项目增加sanic自定义中间件组件
+
 + 增加功能组件中的资源项
 
-    + `ppm project add tp_py_sanic@cp-0.0.1//rest_source --located-path=testsanic/rest/usernamespace --kv=source::user`增加一个api资源
-    + `ppm project add tp_py_sanic@cp-0.0.1//ws_source --located-path=testsanic/ws/usernamespace.py --kv=source::user`增加一个websocket资源
-    + `ppm project add tp_py_sanic@cp-0.0.1//sse_source --located-path=testsanic/sse/usernamespace.py --kv=source::user`增加一个sse资源
-
-+ 如果使用单页应用,参数中设置`spa`为`true`
+    + `ppm project add tp_py_sanic@cp-0.0.1//rest_source --located-path=testsanic/rest/user_source--kv=source::user`增加一个api资源
+    + `ppm project add tp_py_sanic@cp-0.0.1//ws_source --located-path=testsanic/ws/user_source.py --kv=source::user`增加一个websocket资源
+    + `ppm project add tp_py_sanic@cp-0.0.1//sse_source --located-path=testsanic/sse/user_source.py --kv=source::user`增加一个sse资源
+    + `ppm project add tp_py_sanic@cp-0.0.1//download_source --located-path=testsanic/download/user_file.py --kv=source::user`增加一个动态文件下载资源
+    + `ppm project add tp_py_sanic@cp-0.0.1//view_source --located-path=testsanic/view/user_view.py --kv=source::user`增加一个动态页面资源
+    + `ppm project add tp_py_sanic@cp-0.0.1//decorator_source --located-path=testsanic/decorator/user_decorator.py --kv=source::user`增加一个装饰器定义文件
+    + `ppm project add tp_py_sanic@cp-0.0.1//listener_source --located-path=testsanic/listener/user_listener.py --kv=source::user`增加一个sanic监听器定义文件
+    + `ppm project add tp_py_sanic@cp-0.0.1//middleware_reqsource --located-path=testsanic/middleware/user_reqmw.py --kv=source::user`增加一个请求中间件定义文件
+    + `ppm project add tp_py_sanic@cp-0.0.1//middleware_ressource --located-path=testsanic/middleware/user_resmw.py --kv=source::user`增加一个响应中间件定义文件
