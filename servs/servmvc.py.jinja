@@ -131,30 +131,11 @@ class Serv(EntryPoint):
         )
         log.info("获取配置", config=self.config)
         # 设置错误返回为json格式
-        app.config.FALLBACK_ERROR_FORMAT = "json"
+        app.config.FALLBACK_ERROR_FORMAT = "html"
+        # 关闭swagger
+        app.config.OAS = False
         # 注册测试
-        if log_level == "DEBUG":
-            # debug状态下启动swargger
-            address = self.config.get("address", "0.0.0.0:5000")
-            _, port = address.split(":")
-            app.config.OAS_UI_REDOC = False
-            app.config.OAS_UI_DEFAULT = "swagger"
-            app.config.API_HOST = f"localhost:{port}"
-            app.config.API_BASEPATH = "/"
-            app.config.API_SCHEMES = ["http"]
-            if self.config.get("serv_cert_path") and self.config.get.get("serv_key_path"):
-                app.config.API_SCHEMES.append("https")
-            app.config.API_VERSION = self.config.get("app_version")
-            app.config.API_TITLE = self.config.get("app_name")
-            app.config.API_DESCRIPTION = "{{ description }}"
-            app.config.API_CONTACT_NAME = "{{ author }}"
-            app.config.API_CONTACT_EMAIL = "{{ author_email }}"
-            app.config.API_CONTACT_URL = "{{ url }}"
-            # app.config.API_SECURITY_DEFINITIONS = {"BasicAuth": {"type": "basic"}}
-            # app.config.API_SECURITY_DEFINITIONS = {"ApiKeyAuth": {"type": "apiKey", "in": "header", "name": "Authorization"}}
-        else:
-            # 非debug模式下关闭swagger
-            app.config.OAS = False
+        if log_level != "DEBUG":
             # 非debug模式下设置cors
             schema = "http"
             if self.config.get("serv_cert_path") != "" and self.config.get("serv_key_path"):
