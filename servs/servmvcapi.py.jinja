@@ -146,7 +146,7 @@ class Serv(EntryPoint):
             app.config.OAS_UI_REDOC = False
             app.config.OAS_UI_DEFAULT = "swagger"
             app.config.API_HOST = f"localhost:{port}"
-            app.config.API_BASEPATH = "/"
+            app.config.API_BASEPATH = ""
             app.config.API_SCHEMES = ["http"]
             if self.config.get("serv_cert_path") and self.config.get.get("serv_key_path"):
                 app.config.API_SCHEMES.append("https")
