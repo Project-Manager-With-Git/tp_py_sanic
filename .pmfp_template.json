@@ -53,16 +53,6 @@
         }
     },
     "components": {
-        "download": {
-            "source": "tp_py_sanic@dev//download",
-            "description": "下载组件",
-            "default_path": "{{ project_name }}/download"
-        },
-        "rest": {
-            "source": "tp_py_sanic@dev//rest",
-            "description": "sanic的RESTful接口组件",
-            "default_path": "{{ project_name }}/rest"
-        },
         "ws": {
             "source": "tp_py_sanic@dev//ws",
             "description": "sanic的websocket接口组件",
