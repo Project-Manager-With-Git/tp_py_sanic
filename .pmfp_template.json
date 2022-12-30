@@ -55,27 +55,27 @@
     },
     "components": {
         "rest": {
-            "source": "tp_py_sanic@dev//rest",
+            "source": "tp_py_sanic@cp-0.0.1//rest",
             "description": "sanic的RESTful接口组件",
             "default_path": "{{ project_name }}/rest"
         },
         "sse": {
-            "source": "tp_py_sanic@dev//sse",
+            "source": "tp_py_sanic@cp-0.0.1//sse",
             "description": "sanic的sse接口组件",
             "default_path": "{{ project_name }}/sse"
         },
         "ws": {
-            "source": "tp_py_sanic@dev//ws",
+            "source": "tp_py_sanic@cp-0.0.1//ws",
             "description": "sanic的websocket接口组件",
             "default_path": "{{ project_name }}/ws"
         },
         "main": {
-            "source": "tp_py_sanic@dev//main",
+            "source": "tp_py_sanic@cp-0.0.1//main",
             "description": "sanic项目的入口模块组件",
             "default_path": "{{ project_name }}/__main__.py"
         },
         "dockerfile": {
-            "source": "tp_py_sanic@dev//dockerfile",
+            "source": "tp_py_sanic@cp-0.0.1//dockerfile",
             "description": "构造项目镜像使用的dockerfile",
             "default_path": "dockerfile"
         },
@@ -85,7 +85,7 @@
             "default_path": "docker-compose.yml"
         },
         "servspa": {
-            "source": "tp_py_sanic@dev//servspa",
+            "source": "tp_py_sanic@cp-0.0.1//servspa",
             "description": "混合RESTful,ws,sse和download的单页应用模版",
             "default_path": "{{ project_name }}/serv.py"
         }
